@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Entropy</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <!-- Le styles -->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <style type="text/css">
+            body {
+                padding-top: 40px;
+                padding-bottom: 40px;
+                background-color: #f5f5f5;
+            }
+
+            .cute-frame {
+                max-width: 400px;
+                padding: 19px 29px 29px;
+                margin: 0 auto 20px;
+                background-color: #fff;
+                border: 1px solid #e5e5e5;
+                -webkit-border-radius: 5px;
+                -moz-border-radius: 5px;
+                border-radius: 5px;
+                -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+            }
+            .cute-frame .cute-frame-heading,
+            .cute-frame .checkbox {
+                margin-bottom: 10px;
+            }
+
+            #entropy_table {
+                margin: 10px 0;
+                width: 100%;
+            }
+
+            #entropy_table td {
+                background-color: #ddd;
+            }
+
+            .entropy_result {
+                display: none;
+            }
+
+            #entropy_result {
+                width: 100%;
+                height: 90px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="cute-frame">
+            <h2>Entropy generator</h2><hr>
+            <!-- Button to trigger modal -->
+            <a id="entropy_start" role="button" class="btn">Click here to begin !</a>
+            <hr />
+            <p class="entropy_result">Result :<br /><textarea id="entropy_result"></textarea></p>
+
+            <!-- Modal -->
+            <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 id="myModalLabel">Entropy</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Move your mouse over the grey zone to create entropy.</p>
+                    <table id="entropy_table"></table>
+                    <div class="progress">
+                        <div class="bar" id="entropy_progress" style="width: 0%;"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script type="text/javascript">
+            var entropy_percent;
+            var entropy_result;
+
+            function init() {
+                $('#entropy_progress').width("0%");
+                entropy_percent = 0;
+                entropy_result = '';
+            }
+
+            $(function() {
+                var html_table = '';
+                for (var i=0;i<100;i++) {
+                    html_table = html_table + '<tr cy="' + i + '">';
+                    for (var j=0;j<100;j++) {
+                        html_table = html_table + '<td class="entropy_td" cx="' + j + '"></td>';
+                    }
+                    html_table = html_table + '</tr>';
+                }
+                $('#entropy_table').html(html_table);
+
+                $('#entropy_start').click(function(){
+                    init();
+                    $('#myModal').modal('show');
+                });
+
+                $('.entropy_td').mouseenter(function(){
+                    if (entropy_percent < 100) {
+                        entropy_percent += 5;
+                        $('#entropy_progress').width(entropy_percent + "%");
+                        entropy_result = entropy_result + $(this).attr('cx') + $(this).parent().attr('cy');
+                    } else {
+                        $('#entropy_result').html(entropy_result);
+                        $('.entropy_result').show();
+                        $('#myModal').modal('hide');
+                    }
+                });
+
+            });
+        </script>
+    </body>
+</html>
