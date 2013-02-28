@@ -1,4 +1,4 @@
-Entropy
+Entropy jQuery plugin
 =======
 
 Javascript entropy generator for random functions.
